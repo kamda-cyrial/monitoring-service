@@ -27,11 +27,11 @@ async def issue_is_labeled(event, gh, *args, **kwargs):
     url = event.data["issue"]["comments_url"]
     author = event.data["issue"]["user"]["login"]
     label = event.data['label']['name']
-    amount = 3
-
-    message = f"Recorded.  @{author} Will be rewarded with some Prestige XP(I'm a bot!)."
-    reward_user(author, amount)
-    await gh.post(url, data={"body": message})
+    if label == "approved_issue":
+        amount = 3
+        message = f"Recorded.  @{author} Will be rewarded with some Prestige XP(I'm a bot!)."
+        reward_user(author, amount)
+        await gh.post(url, data={"body": message})
 
 @router.register("pull_requests", action="closed")
 async def pull_request_closed(event, gh, *args, **kwargs):
@@ -46,7 +46,7 @@ async def pull_request_closed(event, gh, *args, **kwargs):
         await gh.post(url, data={"body": message})
 
 
-@routes.get("/")
+@routes.post("/")
 async def main(request):
     # read the GitHub webhook payload
     body = await request.read()
