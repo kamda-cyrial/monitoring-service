@@ -24,10 +24,12 @@ async def issue_opened_event(event, gh, *args, **kwargs):
 
 @router.register("issues", action="labeled")
 async def issue_is_labeled(event, gh, *args, **kwargs):
+    print("label issue called")
     url = event.data["issue"]["comments_url"]
     author = event.data["issue"]["user"]["login"]
     label = event.data['label']['name']
     if label == "approved_issue":
+        print("condition met")
         amount = 3
         message = f"Recorded.  @{author} Will be rewarded with some Prestige XP(I'm a bot!)."
         reward_user(author, amount)
@@ -62,7 +64,7 @@ async def main(request):
     async with aiohttp.ClientSession() as session:
         
         gh = GitHubAPI(session, gitdets.user_name, oauth_token=oauth_token)
-
+        print("event did get called, just logging")
         # call the appropriate callback for the event
         await router.dispatch(event, gh)
 
