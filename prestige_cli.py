@@ -6,18 +6,8 @@ from solana.keypair import Keypair
 from solana.rpc.api import Client
 from solana.publickey import PublicKey
 from borsh_construct import *
-import asyncio
-import os
-import aiohttp
-from aiohttp import web
-from gidgethub.aiohttp import GitHubAPI
-from gidgethub import routing, sansio
-from gidgethub import aiohttp as gh_aiohttp
 
 client = Client("https://api.devnet.solana.com")
-
-routes = web.RouteTableDef()
-router = routing.Router()
 
 @click.group()
 def entry():
@@ -47,45 +37,8 @@ def reward_user(user_name, amount):
     request = processor.process_reward_xp(payer_keypair, user_name, int(amount), client)
     print("Transaction Id: ", request['result'])
 
-
-@click.command(name="monitor")
-def monitor():
-    app = web.Application()
-    app.add_routes(routes)
-    port = os.environ.get("PORT")
-    if port is not None:
-        port = int(port)
-
-    web.run_app(app, port=port)
-
-    loop.run_until_complete(start_monitor())
-loop = asyncio.get_event_loop()
-
-@routes.get("/")
-async def start_monitor(request):
-    # gitdets = github_api_key()
-    
-
-    # body = await request.read()
-
-    # # our authentication token and secret
-    # secret = os.environ.get(gitdets.secret_key)
-    # oauth_token = os.environ.get(gitdets.api_key)
-
-    # # a representation of GitHub webhook event
-    # event = sansio.Event.from_http(request.headers, body, secret=secret)
-    # async with aiohttp.ClientSession() as session:
-    #     gh = GitHubAPI(session, gitdets.user_name, oauth_token=gitdets.api_key)
-    #     # call the appropriate callback for the event
-    #     await router.dispatch(event, gh)
-
-    return web.Response(status=200, text="Hello world!")
-
-
-
 entry.add_command(init_configs)
 entry.add_command(register)
 entry.add_command(reward_user)
-entry.add_command(monitor)
 if __name__ == '__main__':
     entry()
