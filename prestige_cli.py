@@ -62,24 +62,24 @@ def monitor():
 loop = asyncio.get_event_loop()
 
 @routes.post("/")
-async def start_monitor(link):
-    gitdets = github_api_key()
+async def start_monitor(request):
+    # gitdets = github_api_key()
     
 
-    body = await request.read()
+    # body = await request.read()
 
-    # our authentication token and secret
-    secret = os.environ.get(gitdets.secret_key)
-    oauth_token = os.environ.get(gitdets.api_key)
+    # # our authentication token and secret
+    # secret = os.environ.get(gitdets.secret_key)
+    # oauth_token = os.environ.get(gitdets.api_key)
 
-    # a representation of GitHub webhook event
-    event = sansio.Event.from_http(request.headers, body, secret=secret)
-    async with aiohttp.ClientSession() as session:
-        gh = GitHubAPI(session, gitdets.user_name, oauth_token=gitdets.api_key)
-        # call the appropriate callback for the event
-        await router.dispatch(event, gh)
+    # # a representation of GitHub webhook event
+    # event = sansio.Event.from_http(request.headers, body, secret=secret)
+    # async with aiohttp.ClientSession() as session:
+    #     gh = GitHubAPI(session, gitdets.user_name, oauth_token=gitdets.api_key)
+    #     # call the appropriate callback for the event
+    #     await router.dispatch(event, gh)
 
-    return web.Response(status=200)
+    return web.Response(status=200, text="Hello world!")
 
 
 
