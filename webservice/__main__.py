@@ -56,8 +56,8 @@ async def main(request):
     gitdets = github_api_key()
     # our authentication token and secret
     secret = gitdets.secret_key
-    print(secret)
     oauth_token = gitdets.api_key
+    print(secret, oauth_token)
 
     # a representation of GitHub webhook event
     event = sansio.Event.from_http(request.headers, body, secret=secret)
