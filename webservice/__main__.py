@@ -24,10 +24,11 @@ async def issue_opened_event(event, gh, *args, **kwargs):
 
 @router.register("issues", action="labeled")
 async def issue_is_labeled(event, gh, *args, **kwargs):
-    print("label issue called")
     url = event.data["issue"]["comments_url"]
     author = event.data["issue"]["user"]["login"]
     label = event.data['label']['name']
+    print("label issue called")
+    print(f"Author: {author}, Label: {label}")
     if label == "approved_issue":
         print("condition met")
         amount = 3
