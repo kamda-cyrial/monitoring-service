@@ -55,8 +55,8 @@ async def main(request):
     body = await request.read()
     gitdets = github_api_key()
     # our authentication token and secret
-    secret = os.environ.get("GH_SECRET")
-    oauth_token = os.environ.get("GH_AUTH")
+    secret = gitdets.secret_key
+    oauth_token = gitdets.api_key
 
     # a representation of GitHub webhook event
     event = sansio.Event.from_http(request.headers, body, secret=secret)
