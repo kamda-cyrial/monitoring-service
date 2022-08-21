@@ -28,7 +28,7 @@ async def issue_is_labeled(event, gh, *args, **kwargs):
     author = event.data["issue"]["user"]["login"]
     label = event.data['label']['name']
     print("label issue called")
-    print(f"Author: {author}, Label: {label}")
+    print(f"Author: {author}, Label: {label}, Url: {url}")
     if label == "approved_issue":
         print("condition met")
         amount = 3
@@ -56,6 +56,7 @@ async def main(request):
     gitdets = github_api_key()
     # our authentication token and secret
     secret = gitdets.secret_key
+    print(secret)
     oauth_token = gitdets.api_key
 
     # a representation of GitHub webhook event
