@@ -52,8 +52,8 @@ async def main(request):
     body = await request.read()
     gitdets = github_api_key()
     # our authentication token and secret
-    secret = gitdets.secret_key
-    oauth_token = gitdets.api_key
+    secret = os.environ.get("GH_SECRET")
+    oauth_token = os.environ.get("GH_AUTH")
 
     # a representation of GitHub webhook event
     event = sansio.Event.from_http(request.headers, body, secret=secret)
@@ -61,7 +61,7 @@ async def main(request):
     # instead of mariatta, use your own username
     async with aiohttp.ClientSession() as session:
         
-        gh = GitHubAPI(session, gitdets.user_name, oauth_token=gitdets.api_key)
+        gh = GitHubAPI(session, gitdets.user_name, oauth_token=oauth_token)
 
         # call the appropriate callback for the event
         await router.dispatch(event, gh)
