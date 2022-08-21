@@ -45,7 +45,7 @@ UserData = CStruct(
 )
 
 def github_api_key():
-    gitfile = json.load(open("..\deploy\github_api_key.json"))
+    gitfile = json.load(open("./deploy/github_api_key.json"))
     class gitdets:
         user_name = gitfile["user_name"]
         api_key = gitfile["api_key"]
