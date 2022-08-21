@@ -32,13 +32,16 @@ def init_configs():
 @click.command(name="reward")
 @click.argument("amount")
 @click.argument("user_name")
+def reward_user_cli(user_name, amount):
+    reward_user(user_name, int(amount))
+    
 def reward_user(user_name, amount):
     payer_keypair = keypair_from_json("./deploy/authorizer_keypair.json")
-    request = processor.process_reward_xp(payer_keypair, user_name, int(amount), client)
+    request = processor.process_reward_xp(payer_keypair, user_name, amount, client)
     print("Transaction Id: ", request['result'])
 
 entry.add_command(init_configs)
 entry.add_command(register)
-entry.add_command(reward_user)
+entry.add_command(reward_user_cli)
 if __name__ == '__main__':
     entry()
