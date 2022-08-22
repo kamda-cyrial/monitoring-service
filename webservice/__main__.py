@@ -1,3 +1,4 @@
+import json
 import os
 from prestige_cli import *
 import asyncio
@@ -38,7 +39,7 @@ async def issue_is_labeled(event, gh, *args, **kwargs):
 
 @router.register("pull_request", action="closed")
 async def pull_request_closed(event, gh, *args, **kwargs):
-    print(event.data)
+    print(json.dumps(event.data, line_indent=4))
     url = event.data["comments_url"]
     author = event.data["pull_request"]["user"]["login"]
     merge_status = event.data["merged"]
