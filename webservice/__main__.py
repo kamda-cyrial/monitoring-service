@@ -38,7 +38,7 @@ async def issue_is_labeled(event, gh, *args, **kwargs):
 
 @router.register("pull_request", action="closed")
 async def pull_request_closed(event, gh, *args, **kwargs):
-
+    print(event.data)
     url = event.data["comments_url"]
     author = event.data["pull_request"]["user"]["login"]
     merge_status = event.data["merged"]
