@@ -16,7 +16,12 @@ routes = web.RouteTableDef()
 router = routing.Router()
 
 label_dict = {
-        "approved_issue": 30,
+        "approved_issue(Prestige XP: 30)": 30,
+        "approved_issue(Prestige XP: 60)": 60,
+        "approved_issue(Prestige XP: 120)": 120,
+        "approved_issue(Prestige XP: 250)": 250,
+        "approved_issue(Prestige XP: 500)": 500,
+        "approved_issue(Prestige XP: 1000)": 1000,
     }
 
 @router.register("issues", action="opened")
@@ -37,14 +42,13 @@ async def issue_is_labeled(event, gh, *args, **kwargs):
     if label in label_dict.keys():
         print("condition met")
         amount = int(label_dict[label]/10)
-        message = f"Recorded.  @{author} Will be rewarded with some Prestige XP(I'm a bot!)."
+        message = f"Recorded.  @{author} Will be rewarded with {amount}Prestige XP(I'm a bot!)."
         reward_user(author, amount)
         await gh.post(url, data={"body": message})
 
 
 @router.register("pull_request", action="closed")
 async def pull_request_closed(event, gh, *args, **kwargs):
-    # print(json.dumps(event.data, indent=4))
     url = event.data["pull_request"]["comments_url"]
     author = event.data["pull_request"]["user"]["login"]
     merge_status = event.data["pull_request"]["merged"]
@@ -54,8 +58,8 @@ async def pull_request_closed(event, gh, *args, **kwargs):
         print(f"Running: {key}")
         if key in [lbl['name'] for lbl in labels]:
             if merge_status:
-                amount = 30
-                message = f"Recorded.  @{author} Will be rewarded with some Prestige XP(I'm a bot!)."
+                amount = int(label_dict[key])
+                message = f"Recorded.  @{author} Will be rewarded with {amount} Prestige XP(I'm a bot!)."
                 reward_user(author, amount)
                 await gh.post(url, data={"body": message})
             break
