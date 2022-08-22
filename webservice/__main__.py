@@ -42,6 +42,7 @@ async def pull_request_closed(event, gh, *args, **kwargs):
     url = event.data["issue"]["comments_url"]
     author = event.data["pull_request"]["user"]["login"]
     merge_status = event.data["merged"]
+    print(f"url: {url}, author: {author}, merge status: {merge_status}")
     if merge_status:
         amount = 30
         message = f"Recorded.  @{author} Will be rewarded with some Prestige XP(I'm a bot!)."
@@ -57,7 +58,6 @@ async def main(request):
     # our authentication token and secret
     secret = gitdets.secret_key
     oauth_token = gitdets.api_key
-    print(secret, oauth_token)
 
     # a representation of GitHub webhook event
     event = sansio.Event.from_http(request.headers, body, secret=secret)
