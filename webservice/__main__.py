@@ -40,9 +40,9 @@ async def issue_is_labeled(event, gh, *args, **kwargs):
 @router.register("pull_request", action="closed")
 async def pull_request_closed(event, gh, *args, **kwargs):
     print(json.dumps(event.data, indent=4))
-    url = event.data["comments_url"]
+    url = event.data["pull_request"]["comments_url"]
     author = event.data["pull_request"]["user"]["login"]
-    merge_status = event.data["merged"]
+    merge_status = event.data["pull_request"]["merged"]
     print(f"url: {url}, author: {author}, merge status: {merge_status}")
     if merge_status:
         amount = 30
