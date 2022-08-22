@@ -36,7 +36,7 @@ async def issue_is_labeled(event, gh, *args, **kwargs):
         reward_user(author, amount)
         await gh.post(url, data={"body": message})
 
-@router.register("pull_requests", action="closed")
+@router.register("pull_request", action="closed")
 async def pull_request_closed(event, gh, *args, **kwargs):
 
     url = event.data["issue"]["comments_url"]
@@ -66,7 +66,6 @@ async def main(request):
     async with aiohttp.ClientSession() as session:
         
         gh = GitHubAPI(session, gitdets.user_name, oauth_token=oauth_token)
-        print("event did get called, just logging")
         # call the appropriate callback for the event
         await router.dispatch(event, gh)
 
