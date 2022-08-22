@@ -44,15 +44,15 @@ async def issue_is_labeled(event, gh, *args, **kwargs):
 
 @router.register("pull_request", action="closed")
 async def pull_request_closed(event, gh, *args, **kwargs):
-    print(json.dumps(event.data, indent=4))
+    # print(json.dumps(event.data, indent=4))
     url = event.data["pull_request"]["comments_url"]
     author = event.data["pull_request"]["user"]["login"]
     merge_status = event.data["pull_request"]["merged"]
     labels = event.data["pull_request"]['labels']
-
+    print(f"url: {url}, author: {author}, merge status: {merge_status}, labels: {labels}")
     for key in label_dict.keys():
+        print("Running: key")
         if key in labels:
-            print(f"url: {url}, author: {author}, merge status: {merge_status}")
             if merge_status:
                 amount = 30
                 message = f"Recorded.  @{author} Will be rewarded with some Prestige XP(I'm a bot!)."
